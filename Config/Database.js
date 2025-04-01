@@ -5,11 +5,14 @@ dotenv.config();
 
 const createConnection = async () => {
   try {
+    console.log("🔗 Connecting to database:", process.env.MYSQLHOST);
+
     const connection = await mysql.createConnection({
-      host: process.env.MYSQLHOST || 'localhost',
-      user: process.env.MYSQLUSER || 'root',
-      password: process.env.MYSQL_ROOT_PASSWORD || '',
-      database: process.env.MYSQLDATABASE || 'resume_builder'
+      host: process.env.MYSQLHOST, 
+      user: process.env.MYSQLUSER, 
+      password: process.env.MYSQLPASSWORD, 
+      database: process.env.MYSQLDATABASE, 
+      port: process.env.MYSQLPORT || 3306
     });
 
     await connection.query(`
@@ -45,10 +48,10 @@ const createConnection = async () => {
       )
     `);
 
-    console.log('✅ Database connected and tables initialized');
+    console.log("✅ Database connected successfully!");
     return connection;
   } catch (error) {
-    console.error('❌ Database connection failed:', error);
+    console.error("❌ Database connection failed:", error);
     process.exit(1);
   }
 };
