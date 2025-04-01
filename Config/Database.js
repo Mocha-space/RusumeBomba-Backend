@@ -12,7 +12,7 @@ const createConnection = async () => {
       user: process.env.MYSQLUSER, 
       password: process.env.MYSQLPASSWORD, 
       database: process.env.MYSQLDATABASE, 
-      port: process.env.PORT
+      port: process.env.MYSQLPORT || 3306
     });
 
     await connection.query(`
