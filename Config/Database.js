@@ -6,10 +6,10 @@ dotenv.config();
 const createConnection = async () => {
   try {
     const connection = await mysql.createConnection({
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_NAME || 'resume_builder'
+      host: process.env.MYSQLHOST || 'localhost',
+      user: process.env.MYSQLUSER || 'root',
+      password: process.env.MYSQL_ROOT_PASSWORD || '',
+      database: process.env.MYSQLDATABASE || 'resume_builder'
     });
 
     await connection.query(`
