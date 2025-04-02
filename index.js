@@ -3,9 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./Routes/UserRoutes.js";
 import resumeRoutes from "./Routes/ResumeRoutes.js";
-import db from "./Config/Database.js";
-import coverLetterRoutes from './Routes/CoverLetterRoutes.js';
-
+import coverLetterRoutes from "./Routes/CoverLetterRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -24,9 +22,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
-
 app.use("/api/cover-letters", coverLetterRoutes);
-
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -43,7 +39,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-const PORT = 5000; // R
+const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`); // 
+  console.log(`🚀 Server running on port ${PORT}`);
 });

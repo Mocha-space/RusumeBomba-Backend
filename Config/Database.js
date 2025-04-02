@@ -7,11 +7,12 @@ const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  // port: process.env.MYSQLPORT || 3306,
+  database: process.env.DB_DATABASE,   // Ensure this is set correctly
   waitForConnections: true,
-  connectionLimit: 10, // Set a limit for connections
+  connectionLimit: 10, // Maximum number of connections
   queueLimit: 0,
+  connectTimeout: 10000,   // 10 seconds connect timeout
+  acquireTimeout: 10000    // 10 seconds acquire timeout
 });
 
 const setupDatabase = async () => {
@@ -52,7 +53,7 @@ const setupDatabase = async () => {
       )
     `);
 
-    connection.release(); // ✅ Always release connection after use
+    connection.release(); // Always release the connection after use
 
     console.log("✅ Database connected successfully!");
   } catch (error) {
@@ -62,4 +63,4 @@ const setupDatabase = async () => {
 };
 
 await setupDatabase();
-export default pool; // Export the connection pool
+export default pool;
