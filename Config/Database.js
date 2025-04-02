@@ -1,19 +1,23 @@
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const createConnection = async () => {
-  try {
-    console.log("🔗 Connecting to database:", process.env.MYSQLHOST);
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  // port: process.env.MYSQLPORT || 3306,
+  waitForConnections: true,
+  connectionLimit: 10, // Set a limit for connections
+  queueLimit: 0,
+});
 
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQLHOST, 
-      user: process.env.MYSQLUSER, 
-      password: process.env.MYSQLPASSWORD, 
-      database: process.env.MYSQLDATABASE, 
-      port: process.env.MYSQLPORT || 3306
-    });
+const setupDatabase = async () => {
+  try {
+    console.log("🔗 Connecting to database:");
+    const connection = await pool.getConnection();
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -48,12 +52,14 @@ const createConnection = async () => {
       )
     `);
 
+    connection.release(); // ✅ Always release connection after use
+
     console.log("✅ Database connected successfully!");
-    return connection;
   } catch (error) {
     console.error("❌ Database connection failed:", error);
     process.exit(1);
   }
 };
 
-export default await createConnection();
+await setupDatabase();
+export default pool; // Export the connection pool
